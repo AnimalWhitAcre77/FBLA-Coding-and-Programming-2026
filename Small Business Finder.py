@@ -1,0 +1,494 @@
+import os
+import json
+import tkinter as tk
+from pathlib import Path
+from PIL import Image, ImageTk
+
+from dataclasses import dataclass, asdict
+
+#Native Libraries
+import constants as c
+import functions as f
+
+#Start the window (I have to put it here for dumb reasons.)
+root = tk.Tk()
+
+#Load in variables ----------
+selected_business_index = 0
+
+#Load in constants ----------
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+#icon images
+filter_image       = ImageTk.PhotoImage(Image.open(c.filter_img).resize((50, 50)))
+sort_image         = ImageTk.PhotoImage(Image.open(c.sort_img).resize((50, 50)))
+favorite_on_image  = ImageTk.PhotoImage(Image.open(c.favorite_img).resize((50, 50)))
+favorite_off_image = ImageTk.PhotoImage(Image.open(c.favorite_outline_img).resize((50, 50)))
+
+#business images
+business_images= {
+    "generic_business_image" : ImageTk.PhotoImage(Image.open(c.generic_business).resize((500, 400)))
+}
+
+#Verification functions
+# Register the Python function and use a tuple with substitutions for Entry validatecommand
+is_rating = root.register(f.is_rating)
+
+#Popup Windows ----------
+
+#Quit the program
+def confirmation_window(event=None):
+    def quit_program():
+        root.destroy()
+
+    pop = tk.Toplevel()
+
+    c.SubTitle(pop, text="Are you sure you want to quit?????>?!?!?!").grid(row=0, column=0, columnspan=2, sticky="nesw", padx=10, pady=10)
+    tk.Button(pop, text="Cancel", command=pop.destroy).grid(row=1, column=0, sticky="nesw", padx=10, pady=10)
+    tk.Button(pop, text="Quit", command=quit_program).grid(row=1, column=1, sticky="nesw", padx=10, pady=10)
+
+#Pop up to handle filtering the business list
+def filter_window():
+    def update_filter_ui(event):
+        nonlocal selected_filters
+        selected_filters = listbox.curselection()
+
+        #clear the filter ui
+        for child in FilterEditor.winfo_children():
+            child.destroy()
+        
+        #read the right filter ui depending on what is selected in the listbox
+        if 0 in selected_filters:
+            c.SubTitle(FilterEditor, text="Rating").grid(row=0, column=0, padx=10, pady=10)
+            
+            tk.OptionMenu(FilterEditor, rating_operator, ">", "=", "<").grid(row=0, column=1, padx=10, pady=10)
+            tk.Entry(FilterEditor, textvariable=rating_number, validate="key", validatecommand=(is_rating, '%P')).grid(row=0, column=2, padx=10, pady=10)
+        else:
+            rating_operator.set("=")
+            rating_number.set("5.0")
+        
+        if 1 in selected_filters:
+            c.SubTitle(FilterEditor, text="Business open at: ").grid(row=1, column=0, padx=10, pady=10)
+            
+            tk.OptionMenu(FilterEditor, hour_number, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12").grid(row=1, column=1, padx=10, pady=10)
+            tk.OptionMenu(FilterEditor, hour_AmPm, "A.M.", "P.M.").grid(row=1, column=2, padx=10, pady=10)
+        else:
+            hour_number.set("1")
+            hour_AmPm.set("A.M.")
+
+        if 2 in selected_filters:
+            c.SubTitle(FilterEditor, text="Favorite").grid(row=2, column=0, padx=10, pady=10)
+            c.SubTitle(FilterEditor, text="=").grid(row=2, column=1, padx=10, pady=10)
+            
+            tk.OptionMenu(FilterEditor, favorite_operator, "True", "False").grid(row=2, column=2, padx=10, pady=10)
+        else:
+            favorite_operator.set("True")
+
+        if 3 in selected_filters:
+            c.SubTitle(FilterEditor, text="Type").grid(row=3, column=0, padx=10, pady=10)
+            c.SubTitle(FilterEditor, text="=").grid(row=3, column=1, padx=10, pady=10)
+            
+            tk.OptionMenu(FilterEditor, type_enumeration, "Food", "Grocery", "Auto").grid(row=3, column=2, padx=10, pady=10)
+        else:
+            favorite_operator.set("True")
+    
+    #Closes the pop window and updates the filtered business selection
+    def finish_pop():
+        filters = [] #empty the filter list
+        if 0 in selected_filters:
+            filters.append(rating_operator.get())
+            filters.append(rating_number.get())
+        else:
+            filters.append("")
+            filters.append("")
+        if 1 in selected_filters:
+            filters.append(hour_number.get())
+            filters.append(hour_AmPm.get())
+        else:
+            filters.append("")
+            filters.append("")
+        if 2 in selected_filters:
+            filters.append(favorite_operator.get())
+        else:
+            filters.append("")
+            filters.append("")
+        if 3 in selected_filters:
+            filters.append(type_enumeration.get())
+        else:
+            filters.append("")
+            filters.append("")
+
+        filter_businesses(filters)
+
+        pop.destroy()
+
+    pop = tk.Toplevel()
+
+    #Variables made to be set by the filterEditor UI
+    selected_filters = []
+
+    rating_operator = tk.StringVar(pop)
+    rating_operator.set("=")
+    rating_number = tk.StringVar(pop)
+    rating_number.set("5.0")
+
+    hour_number = tk.StringVar(pop)
+    hour_number.set("1")
+    hour_AmPm = tk.StringVar(pop)
+    hour_AmPm.set("A.M.")
+
+    favorite_operator = tk.StringVar(pop)
+    favorite_operator.set("True")
+
+    type_enumeration = tk.StringVar(pop)
+
+    c.SubTitle(pop, text="Filter").grid(row=0, column=0, padx=10, pady=10)
+
+    listbox = tk.Listbox(pop, selectmode="multiple")
+    listbox.bind("<<ListboxSelect>>", update_filter_ui)
+    listbox.grid(row=1, column=0, padx=10, pady=10)
+
+    listbox.insert(tk.END, "Rating")
+    listbox.insert(tk.END, "Hours")
+    listbox.insert(tk.END, "Favorite")
+    listbox.insert(tk.END, "Business Type")
+
+    FilterEditor = tk.Frame(pop)
+    FilterEditor.grid(row=2, column=0)
+
+    tk.Button(pop, text="Done", command=finish_pop).grid(row=3, column=0, sticky="e", padx=10, pady=10)
+
+
+def sort_window():
+    def finish_pop():
+        sort_business(sortCategory.get(), sortOrder.get())
+        pop.destroy()
+
+    pop = tk.Toplevel()
+    sortCategory = tk.StringVar()
+    sortCategory.set("Name")
+    sortOrder = tk.StringVar()
+    sortOrder.set("A-Z (Low to High)")
+
+    c.SubTitle(pop, text="Sort List").grid(row=0, column=0, padx=10, pady=10, columnspan=2)
+
+    tk.Label(pop, text="Sort By:").grid(row=1, column=0, padx=10, pady=10)
+    tk.OptionMenu(pop, sortCategory, "Name", "Rating", "Favorite", "Business Type").grid(row=2, column=0, padx=10, pady=10)
+
+    tk.Label(pop, text="Sort Order:").grid(row=1, column=1, padx=10, pady=10)
+    tk.OptionMenu(pop, sortOrder, "A-Z (Low to High)", "Z-A (High to Low)").grid(row=2, column=1, padx=10, pady=10)
+
+    tk.Button(pop, text="Cancel", command=pop.destroy).grid(row=3, column=0, sticky="e", padx=10, pady=10)
+    tk.Button(pop, text="Done", command=finish_pop).grid(row=3, column=1, sticky="e", padx=10, pady=10)
+
+
+
+#Configure UI ----------
+
+#Set up the main window
+root.title("HEEELLLLPPPP?")
+root.attributes('-fullscreen', True)
+root.grid_rowconfigure(0, weight=1)  # Make row 0 expand vertically
+root.grid_columnconfigure(0, weight=1) # Make column 0&1 expand horizontally
+root.grid_columnconfigure(1, weight=1) # Make column 0&1 expand horizontally
+
+#Set up Main Screen
+left = tk.Frame(root, bg=c.background, relief="ridge", borderwidth=15)
+left.grid(row=0, column=0, sticky="nesw")
+
+right = tk.Frame(root, bg=c.background, relief="ridge", borderwidth=15)
+right.grid(row=0, column=1, sticky="nesw")
+
+#Populate left frame
+c.MainTitle(left, text="Business List:").grid(row=0, column=2, padx=5, pady=5)
+
+filter_btn = tk.Button(left, image=filter_image, command=filter_window)
+filter_btn.image = filter_image   # keep a reference to avoid GC
+filter_btn.grid(row=1, column=0, padx=5, pady=5)
+
+sort_btn = tk.Button(left, image=sort_image, command=sort_window)
+sort_btn.image = sort_image
+sort_btn.grid(row=1, column=1, padx=5, pady=5)
+
+search_bar = tk.Entry(left, bg=c.entry_background, fg=c.entry_text, font=("Arial", 32)).grid(row=1, column=2, columnspan=3, padx=5, pady=5, sticky="ew")
+
+business_display = tk.Frame(left, bg=c.background)
+business_display.grid(row=2, column=0, columnspan=5, sticky="nesw", padx=15, pady=15)
+business_display.grid_columnconfigure(0, weight=1)
+
+
+#Functions ----------
+
+def on_business_click(index):
+    global selected_business_index
+    selected_business_index = index
+    update_right_list()
+
+def toggle_favorite(idx):
+    # Toggle boolean favorite flag
+    visible_business_list[idx].favorite = not bool(visible_business_list[idx].favorite)
+    update_left_list()
+
+#Empties all children on the left and refills the left side with current businesses and info
+def update_left_list():
+    for child in business_display.winfo_children():
+        child.destroy()
+    
+    #Iterate through the filtered business list
+    for i, business in enumerate(visible_business_list):
+        # Create a frame to hold the button content
+        btn_frame = tk.Frame(business_display, bg=c.background, relief="solid", borderwidth=1)
+        btn_frame.grid(row=i, column=0, columnspan=2, sticky="ew", padx=5, pady=5)
+        btn_frame.grid_columnconfigure(0, weight=1)
+        
+        #Create Name button (clickable, takes up space)
+        name_btn = tk.Button(
+            btn_frame,
+            text=f"{business.name} ({business.type})",
+            command=lambda idx=i: on_business_click(idx),
+            bg=c.background,
+            fg="black",
+            font=("Arial", 16),
+            relief="flat",
+            anchor="w",
+            padx=10,
+            pady=10
+        )
+        name_btn.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
+        
+        #Create Favorite button on the right
+        if business.favorite:
+            favorite_image = favorite_on_image
+        else:
+            favorite_image = favorite_off_image
+        
+        fav_btn = tk.Button(
+            btn_frame,
+            image=favorite_image,
+            command=lambda idx=i: toggle_favorite(idx),
+            bg=c.background,
+            relief="flat",
+            padx=5,
+            pady=5
+        )
+        fav_btn.image = favorite_image
+        fav_btn.grid(row=0, column=1, sticky="e", padx=5, pady=5)
+
+def update_right_list():
+    #Clear all items in the frame
+    for child in right.winfo_children():
+        child.destroy()
+    
+    #figure out which business to display
+    try:
+        selected_business = visible_business_list[selected_business_index]
+    except:
+        return None
+
+    #add all the contents according to the selected business
+    selected_image = business_images[selected_business.image] 
+
+    c.MainTitle(right, text=f"{selected_business.name} ({selected_business.rating} ★)").grid(row=0, column=0, padx=5, pady=5)
+    tk.Label(right, image=selected_image).grid(row=1, column=0, padx=5, pady=5)
+    c.Paragraph(right, text=selected_business.description, bd=1, relief="ridge").grid(row=2, column=0, padx=5, pady=5, sticky="ew")
+    c.Paragraph(right, text=("Hours: " + selected_business.hours + "\n" + "Address: " + selected_business.address), bd=1, relief="ridge").grid(row=3, column=0, padx=5, pady=5, sticky="ew")
+    tk.Button(right, text="Leave a Review").grid(row=4, column=0, padx=5, pady=5, sticky="sw")
+
+    right.columnconfigure(0, weight=1)
+
+    
+#Switches between fullscreen and window mode. Probs delete this later.
+def toggle_fullscreen(event=None):
+    root.attributes("-fullscreen", not root.attributes("-fullscreen"))
+
+#Keybinds ----------
+
+root.bind("<Escape>", confirmation_window) #Sets Escape to quit the program
+root.bind("<F11>", toggle_fullscreen) #Sets F11 to toggle fullscreen
+
+#Start and format the business file
+
+#Load the business file into a class ALL CODE BELOW HERE IS UNFINISHED AND UNTESTED PROCEED WITH AT LEAST ONE INSTANCE OF NEVER GONNA GIVE YOU UP ON LOOP IN THE BACKGROUND OR ELSE THE ENTIRE CODE BASE WILL SENSE WEAKNESS AND JUMP YOU IN YOUR BACKALLEY. BE WARNED!
+
+@dataclass
+class Business:
+    name: str
+    rating: float
+    image: str
+    description: str
+    address: str
+    hours: str 
+    favorite: bool
+    type: str
+
+def load_objects() -> list[Business]:
+    # Tries to open the json file and coerce fields to the correct types
+    def _coerce(d: dict) -> Business:
+        return Business(
+            name=d.get("name", ""),
+            rating=float(d.get("rating", 0.0)),
+            image=d.get("image", "generic_business_image"),
+            description=d.get("description", ""),
+            address=d.get("address", ""),
+            hours=d.get("hours", ""),
+            favorite=str(d.get("favorite", "False")).lower() in ("true", "1", "yes"),
+            type=str(d.get("type", ""))
+        )
+
+    try:
+        with open(Path(__file__).parent / "Businesses.json", "r") as fd:
+            return [_coerce(x) for x in json.load(fd)]
+    except FileNotFoundError:
+        return []
+
+def append_object(object):
+    # Turns a business into a dictionary and adds it to the json file.
+    data = [asdict(x) for x in load_objects()] + [asdict(object)]
+    with open(Path(__file__).parent / "Businesses.json", "w") as fd:
+        json.dump(data, fd)
+
+def write_objects(objects) -> list[Business]:
+    # Overwrite the JSON file with the provided list of Business objects
+    data = [asdict(x) for x in objects]
+    with open(Path(__file__).parent / "Businesses.json", "w") as fd:
+        json.dump(data, fd)
+
+    return objects
+
+#Iterate through filter (list of lambda expressions) and only keep business that meet all of them.
+def filter_businesses(filters):
+    global visible_business_list
+    
+    visible_business_list = business_list.copy() #Has to make it new list so business_list is unchanged
+
+    if filters[0] != "": #first condition isn't empty (rating)
+        for business in visible_business_list:
+            if filters[0] == ">":   #Greater Than
+                if business.rating <= float(filters[1]):
+                    visible_business_list.remove(business)
+            elif filters[0] == "=": #Equal To
+                if business.rating != float(filters[1]):
+                    visible_business_list.remove(business)
+            else:                   #Less Than
+                if business.rating >= float(filters[1]):
+                    visible_business_list.remove(business)
+    
+    elif filters[2] != "": #second condition (time)
+        filterTime = int(filters[2])
+        
+        if filters[3] == "P.M." and filterTime != 12:
+            filterTime += 12
+        elif filters[3] == "A.M." and filterTime == 12:
+            filterTime += 12
+        
+        temp = []
+        for business in visible_business_list:
+            businessTime = business.hours.split(" ") #load in the business open times, will look like this: ["3", "A.M.", "-", "5", "P.M."]
+            businessTime.pop(2)                                               #["3", "A.M.", "5", "P.M."]
+            businessTime[0] = int(businessTime[0])
+            businessTime[2] = int(businessTime[2])                            #[3, "A.M.", 5, "P.M."]
+
+            if businessTime.pop(1) == "P.M." and businessTime[0] != 12:       #[3, 5, "P.M."]
+                businessTime[0] += 12
+            if businessTime.pop(2) == "P.M." and businessTime[1] != 12:       #[3, 17]
+                businessTime[1] += 12
+
+            #filter the businesses
+            if filterTime >= businessTime[0] and filterTime <= businessTime[1]:
+                temp.append(business)
+        
+        visible_business_list = temp
+            
+    elif filters[4] != "": #third condition (favorite)
+        temp = []
+        for business in visible_business_list:
+            if (str(business.favorite) == str(filters[4])):
+                temp.append(business)
+        visible_business_list = temp
+    
+    elif filters[6] != "": #fourth condition (business type)
+        temp = []
+        for business in visible_business_list:
+            if (business.type == str(filters[6])):
+                temp.append(business)
+        visible_business_list = temp
+    
+    update_left_list()
+
+# sort and update the filtered business list
+def sort_business(category, order):
+    global visible_business_list
+    
+    if order == "A-Z (Low to High)":
+        is_reverse = False
+    else:
+        is_reverse = True
+
+    # match the sorting command with the chosen category
+    match category:
+        case "Name":
+            visible_business_list = sorted(visible_business_list, key=lambda business: business.name, reverse=is_reverse)
+        case "Rating":
+            visible_business_list = sorted(visible_business_list, key=lambda business: business.rating, reverse=is_reverse)
+        case "Favorite":
+            visible_business_list = sorted(visible_business_list, key=lambda business: business.favorite, reverse=is_reverse)
+        case "Business Type":
+            visible_business_list = sorted(visible_business_list, key=lambda business: business.type, reverse=is_reverse)
+    
+    update_left_list()
+
+
+
+
+
+business_list = load_objects()
+visible_business_list = business_list
+update_left_list()
+update_right_list()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+root.mainloop()
