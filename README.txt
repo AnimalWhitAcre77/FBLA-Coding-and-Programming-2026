@@ -1,3 +1,6 @@
+This is Small Business Finder Application. There is no exe, and the whole file is needed to run.
+
+
 All the Icons I'm going to use for this project will be from the site: https://icon-sets.iconify.design/material-symbols/page-2.html
 
 this is a test json file:
