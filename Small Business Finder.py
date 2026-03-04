@@ -288,11 +288,11 @@ def update_right_list():
     #add all the contents according to the selected business
     selected_image = business_images[selected_business.image] 
 
-    c.MainTitle(right, text=f"{selected_business.name} ({selected_business.rating} ★)").grid(row=0, column=0, padx=5, pady=5)
-    tk.Label(right, image=selected_image).grid(row=1, column=0, padx=5, pady=5)
-    c.Paragraph(right, text=selected_business.description, bd=1, relief="ridge").grid(row=2, column=0, padx=5, pady=5, sticky="ew")
+    c.MainTitle(right, text=f"{selected_business.name} ({selected_business.rating} ★)").grid(row=0, column=0, padx=5, pady=5, columnspan=2)
+    tk.Label(right, image=selected_image).grid(row=1, column=0, padx=5, pady=5, columnspan=2)
+    c.Paragraph(right, text=selected_business.description, bd=1, relief="ridge").grid(row=2, column=0, padx=5, pady=5, sticky="ew", columnspan=2)
     c.Paragraph(right, text=("Hours: " + selected_business.hours + "\n" + "Address: " + selected_business.address), bd=1, relief="ridge").grid(row=3, column=0, padx=5, pady=5, sticky="ew")
-    tk.Button(right, text="Leave a Review").grid(row=4, column=0, padx=5, pady=5, sticky="sw")
+    tk.Button(right, text="Leave a Review").grid(row=3, column=1, padx=5, pady=5, sticky="sw")
 
     right.columnconfigure(0, weight=1)
 

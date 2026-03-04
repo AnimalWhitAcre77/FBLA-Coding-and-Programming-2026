@@ -37,7 +37,7 @@ class SubTitle(tk.Label):
 #Message formatted for paragraph text
 class Paragraph(tk.Message):
     def __init__(self, parent, *args, **kwargs):
-        super().__init__(parent, bg=background, font=("Arial", 32), *args, **kwargs)
+        super().__init__(parent, bg=background, font=("Arial", 12), *args, **kwargs)
 
 #Frame configured to activate the specified command with the specidied id when clicked
 class ClickableFrame(tk.Frame):
