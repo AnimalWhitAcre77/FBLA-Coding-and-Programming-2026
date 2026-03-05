@@ -15,6 +15,7 @@ root = tk.Tk()
 
 #Load in variables ----------
 selected_business_index = 0
+filters = ["", "", "", "", "", "", "", ""]
 
 #Load in constants ----------
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -90,35 +91,32 @@ def filter_window():
             
             tk.OptionMenu(FilterEditor, type_enumeration, "Food", "Grocery", "Auto").grid(row=3, column=2, padx=10, pady=10)
         else:
-            favorite_operator.set("True")
+            # clear the type enumeration when the filter is deselected
+            type_enumeration.set("")
     
     #Closes the pop window and updates the filtered business selection
     def finish_pop():
-        filters = [] #empty the filter list
+        global filters
         if 0 in selected_filters:
-            filters.append(rating_operator.get())
-            filters.append(rating_number.get())
-        else:
-            filters.append("")
-            filters.append("")
+            filters[0] = rating_operator.get()
+            filters[1] = rating_number.get()
         if 1 in selected_filters:
-            filters.append(hour_number.get())
-            filters.append(hour_AmPm.get())
-        else:
-            filters.append("")
-            filters.append("")
+            filters[2] = hour_number.get()
+            filters[3] = hour_AmPm.get()
         if 2 in selected_filters:
-            filters.append(favorite_operator.get())
-        else:
-            filters.append("")
-            filters.append("")
+            filters[4] = favorite_operator.get()
         if 3 in selected_filters:
-            filters.append(type_enumeration.get())
-        else:
-            filters.append("")
-            filters.append("")
+            filters[6] = type_enumeration.get()
 
-        filter_businesses(filters)
+        filter_businesses()
+
+        pop.destroy()
+
+    def clear_pop():
+        global filters
+        filters = ["", "", "", "", "", "", "", ""]
+
+        filter_businesses()
 
         pop.destroy()
 
@@ -156,7 +154,8 @@ def filter_window():
     FilterEditor = tk.Frame(pop)
     FilterEditor.grid(row=2, column=0)
 
-    tk.Button(pop, text="Done", command=finish_pop).grid(row=3, column=0, sticky="e", padx=10, pady=10)
+    tk.Button(pop, text="Clear", command=clear_pop).grid(row=3, column=0, sticky="w", padx=10, pady=10)
+    tk.Button(pop, text="Done", command=finish_pop).grid(row=3, column=1, sticky="e", padx=10, pady=10)
 
 
 def sort_window():
@@ -210,7 +209,11 @@ sort_btn = tk.Button(left, image=sort_image, command=sort_window)
 sort_btn.image = sort_image
 sort_btn.grid(row=1, column=1, padx=5, pady=5)
 
-search_bar = tk.Entry(left, bg=c.entry_background, fg=c.entry_text, font=("Arial", 32)).grid(row=1, column=2, columnspan=3, padx=5, pady=5, sticky="ew")
+# create a StringVar for the search bar (was missing parentheses)
+search_var = tk.StringVar()
+search_bar = tk.Entry(left, textvariable=search_var, bg=c.entry_background, fg=c.entry_text, font=("Arial", 32))
+search_bar.grid(row=1, column=2, columnspan=3, padx=5, pady=5, sticky="ew")
+
 
 business_display = tk.Frame(left, bg=c.background)
 business_display.grid(row=2, column=0, columnspan=5, sticky="nesw", padx=15, pady=15)
@@ -223,6 +226,14 @@ def on_business_click(index):
     global selected_business_index
     selected_business_index = index
     update_right_list()
+
+def on_search(*args):
+    text = search_var.get()
+    global filters
+    filters[7] = text
+    filter_businesses()
+
+search_var.trace("w", on_search)
 
 def toggle_favorite(idx):
     # Toggle boolean favorite flag
@@ -356,8 +367,9 @@ def write_objects(objects) -> list[Business]:
     return objects
 
 #Iterate through filter (list of lambda expressions) and only keep business that meet all of them.
-def filter_businesses(filters):
+def filter_businesses():
     global visible_business_list
+    global filters
     
     visible_business_list = business_list.copy() #Has to make it new list so business_list is unchanged
 
@@ -373,7 +385,7 @@ def filter_businesses(filters):
                 if business.rating >= float(filters[1]):
                     visible_business_list.remove(business)
     
-    elif filters[2] != "": #second condition (time)
+    if filters[2] != "": #second condition (time)
         filterTime = int(filters[2])
         
         if filters[3] == "P.M." and filterTime != 12:
@@ -399,17 +411,24 @@ def filter_businesses(filters):
         
         visible_business_list = temp
             
-    elif filters[4] != "": #third condition (favorite)
+    if filters[4] != "": #third condition (favorite)
         temp = []
         for business in visible_business_list:
             if (str(business.favorite) == str(filters[4])):
                 temp.append(business)
         visible_business_list = temp
     
-    elif filters[6] != "": #fourth condition (business type)
+    if filters[6] != "": #fourth condition (business type)
         temp = []
         for business in visible_business_list:
             if (business.type == str(filters[6])):
+                temp.append(business)
+        visible_business_list = temp
+    
+    if filters[7] != "":
+        temp = []
+        for business in visible_business_list:
+            if (filters[7].lower() in business.name.lower()):
                 temp.append(business)
         visible_business_list = temp
     

@@ -7,7 +7,7 @@ from PIL import Image, ImageTk
 background = "lightblue"
 popup_background = "#F0F0ED"
 entry_background = "white"
-entry_text = "grey"
+entry_text = "gray7"
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
