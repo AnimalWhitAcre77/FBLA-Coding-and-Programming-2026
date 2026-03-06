@@ -31,6 +31,9 @@ business_images= {
     "generic_business_image" : ImageTk.PhotoImage(Image.open(c.generic_business).resize((500, 400)))
 }
 
+#other images
+captcha_image = ImageTk.PhotoImage(Image.open(c.captcha_image).resize((200, 70)))
+
 #Verification functions
 # Register the Python function and use a tuple with substitutions for Entry validatecommand
 is_rating = root.register(f.is_rating)
@@ -157,7 +160,6 @@ def filter_window():
     tk.Button(pop, text="Clear", command=clear_pop).grid(row=3, column=0, sticky="w", padx=10, pady=10)
     tk.Button(pop, text="Done", command=finish_pop).grid(row=3, column=1, sticky="e", padx=10, pady=10)
 
-
 def sort_window():
     def finish_pop():
         sort_business(sortCategory.get(), sortOrder.get())
@@ -180,6 +182,51 @@ def sort_window():
     tk.Button(pop, text="Cancel", command=pop.destroy).grid(row=3, column=0, sticky="e", padx=10, pady=10)
     tk.Button(pop, text="Done", command=finish_pop).grid(row=3, column=1, sticky="e", padx=10, pady=10)
 
+def captcha_window():
+    def check_solution(event):
+        if captcha_input.get() == "w3dfs":
+            pop.destroy()
+            rating_window()
+        else:
+            captcha_input.set("")
+            text.config(text="Please Try Again: ")
+
+
+    pop = tk.Toplevel()
+    captcha_input = tk.StringVar()
+    captcha_input.set("") #initialize with something so validation doesn't crash
+
+    c.SubTitle(pop, text="Captcha").grid(row=0, column=0, columnspan = 2, padx=10, pady=10)
+
+    tk.Label(pop, image=captcha_image).grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+
+    text = tk.Label(pop, text="Enter the text to continue:")
+    text.grid(row=2, column=0, padx=10, pady=10)
+
+    entry = tk.Entry(pop, textvariable=captcha_input)
+    entry.grid(row=2, column=1, padx=10, pady=10)
+    entry.bind("<Return>", check_solution)
+
+    tk.Button(pop, text="Cancel", command=pop.destroy).grid(row=3, column=0, padx=10, pady=10, sticky="w")
+    tk.Button(pop, text="Submit", command=check_solution).grid(row=3, column=1, padx=10, pady=10, sticky="e")
+
+def rating_window(): #uses the selected_business_index var to leave the right rating
+    def finish_pop():
+        visible_business_list[selected_business_index].rating = round((visible_business_list[selected_business_index].rating + rating.get()) / 2, 1)
+        update_right_list()
+        pop.destroy()
+
+    pop = tk.Toplevel()
+    rating = tk.DoubleVar()
+
+    c.SubTitle(pop, text="Rating").grid(row=0, column=0, columnspan = 2, padx=10, pady=10)
+
+    tk.Label(pop, text=f"Leave a Rating for {visible_business_list[selected_business_index].name}:").grid(row=1, column=0, padx=10, pady=10)
+
+    tk.Scale(pop, variable=rating, from_=0.0, to=5.0, orient="horizontal").grid(row=1, column=1, padx=10, pady=10)
+
+    tk.Button(pop, text="Cancel", command=pop.destroy).grid(row=2, column=0, padx=10, pady=10, sticky="w")
+    tk.Button(pop, text="Submit", command=finish_pop).grid(row=2, column=1, padx=10, pady=10, sticky="e")
 
 
 #Configure UI ----------
@@ -303,7 +350,7 @@ def update_right_list():
     tk.Label(right, image=selected_image).grid(row=1, column=0, padx=5, pady=5, columnspan=2)
     c.Paragraph(right, text=selected_business.description, bd=1, relief="ridge").grid(row=2, column=0, padx=5, pady=5, sticky="ew", columnspan=2)
     c.Paragraph(right, text=("Hours: " + selected_business.hours + "\n" + "Address: " + selected_business.address), bd=1, relief="ridge").grid(row=3, column=0, padx=5, pady=5, sticky="ew")
-    tk.Button(right, text="Leave a Review").grid(row=3, column=1, padx=5, pady=5, sticky="sw")
+    tk.Button(right, text="Leave a Review", command=captcha_window).grid(row=3, column=1, padx=5, pady=5, sticky="sw")
 
     right.columnconfigure(0, weight=1)
 
@@ -456,58 +503,9 @@ def sort_business(category, order):
     
     update_left_list()
 
-
-
-
-
 business_list = load_objects()
 visible_business_list = business_list
 update_left_list()
 update_right_list()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 root.mainloop()

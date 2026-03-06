@@ -22,6 +22,8 @@ favorite_outline_img = Path(__file__).parent / "Images" / "favorite_outline.png"
 #business images
 generic_business = Path(__file__).parent / "Images" / "generic_business.jpeg"
 
+captcha_image = Path(__file__).parent / "Images" / "captcha_text.png"
+
 #Premade / Formatted widgets ----------
 
 #Label formatted for Main window Titles
