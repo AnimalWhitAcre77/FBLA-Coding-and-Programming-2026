@@ -183,7 +183,7 @@ def sort_window():
     tk.Button(pop, text="Done", command=finish_pop).grid(row=3, column=1, sticky="e", padx=10, pady=10)
 
 def captcha_window():
-    def check_solution(event):
+    def check_solution(*args):
         if captcha_input.get() == "w3dfs":
             pop.destroy()
             rating_window()
