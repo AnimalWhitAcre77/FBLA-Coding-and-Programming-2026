@@ -31,7 +31,7 @@ class MainTitle(tk.Label):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, bg=background, font=("Arial", 32, "bold"), *args, **kwargs)
 
-#Label formatted for Main window Titles
+#Label formatted for pop up windows
 class SubTitle(tk.Label):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, bg=popup_background, font=("Arial", 16, "bold"), *args, **kwargs)
@@ -39,7 +39,7 @@ class SubTitle(tk.Label):
 #Message formatted for paragraph text
 class Paragraph(tk.Message):
     def __init__(self, parent, *args, **kwargs):
-        super().__init__(parent, bg=background, font=("Arial", 12), *args, **kwargs)
+        super().__init__(parent, bg=background, font=("Arial", 16), *args, **kwargs)
 
 #Frame configured to activate the specified command with the specidied id when clicked
 class ClickableFrame(tk.Frame):
