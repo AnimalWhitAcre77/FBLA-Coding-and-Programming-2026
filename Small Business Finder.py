@@ -145,7 +145,8 @@ def filter_window():
 
     c.SubTitle(pop, text="Filter").grid(row=0, column=0, padx=10, pady=10)
 
-    listbox = tk.Listbox(pop, selectmode="multiple")
+    # Keep selection even when focus moves to other widgets (e.g. when highlighting entry text)
+    listbox = tk.Listbox(pop, selectmode="multiple", exportselection=False)
     listbox.bind("<<ListboxSelect>>", update_filter_ui)
     listbox.grid(row=1, column=0, padx=10, pady=10)
 
@@ -455,17 +456,18 @@ def filter_businesses():
     visible_business_list = business_list.copy() #Has to make it new list so business_list is unchanged
 
     if filters[0] != "": #first condition isn't empty (rating)
-        for business in visible_business_list:
-            if filters[0] == ">":   #Greater Than
-                if business.rating <= float(filters[1]):
-                    visible_business_list.remove(business)
-            elif filters[0] == "=": #Equal To
-                if business.rating != float(filters[1]):
-                    visible_business_list.remove(business)
-            else:                   #Less Than
-                if business.rating >= float(filters[1]):
-                    visible_business_list.remove(business)
-    
+        try:
+            filter_rating = float(filters[1])
+        except ValueError:
+            filter_rating = 0.0
+
+        if filters[0] == ">":   #Greater Than
+            visible_business_list = [b for b in visible_business_list if b.rating > filter_rating]
+        elif filters[0] == "=": #Equal To
+            visible_business_list = [b for b in visible_business_list if b.rating == filter_rating]
+        else:                   #Less Than
+            visible_business_list = [b for b in visible_business_list if b.rating < filter_rating]
+
     if filters[2] != "": #second condition (time)
         filterTime = int(filters[2])
         
@@ -509,7 +511,7 @@ def filter_businesses():
     if filters[7] != "":
         temp = []
         for business in visible_business_list:
-            if (filters[7].lower() in business.name.lower()):
+            if (filters[7].lower() in f"{business.name.lower()} ({business.type.lower()})"):
                 temp.append(business)
         visible_business_list = temp
     
