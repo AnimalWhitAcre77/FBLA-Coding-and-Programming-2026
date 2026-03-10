@@ -28,7 +28,28 @@ favorite_off_image = ImageTk.PhotoImage(Image.open(c.favorite_outline_img).resiz
 
 #business images
 business_images= {
-    "generic_business_image" : ImageTk.PhotoImage(Image.open(c.generic_business).resize((500, 400)))
+    "generic_business_image" : ImageTk.PhotoImage(Image.open(c.generic_business).resize((500, 400))),
+    "fillmore_market" : ImageTk.PhotoImage(Image.open(c.fillmore_market).resize((500, 400))),
+    "iceberg" : ImageTk.PhotoImage(Image.open(c.iceberg).resize((500, 400))),
+    "kanosh_labs" : ImageTk.PhotoImage(Image.open(c.kanosh_labs).resize((500, 400))),
+    "ace_hardware" : ImageTk.PhotoImage(Image.open(c.ace_hardware).resize((500, 400))),
+    "mountain_view_mushroom" : ImageTk.PhotoImage(Image.open(c.mountain_view_mushroom).resize((500, 400))),
+    "the_flower_mill_and_me" : ImageTk.PhotoImage(Image.open(c.the_flower_mill_and_me).resize((500, 400))),
+    "great_lakes_cheese" : ImageTk.PhotoImage(Image.open(c.great_lakes_cheese).resize((500, 400))),
+    "ashton_farms_custom_meat" : ImageTk.PhotoImage(Image.open(c.ashton_farms_custom_meat).resize((500, 400))),
+    "ifa" : ImageTk.PhotoImage(Image.open(c.ifa).resize((500, 400))),
+    "sevice_drug" : ImageTk.PhotoImage(Image.open(c.service_drug).resize((500, 400))),
+    "fillys_carhop_cafe" : ImageTk.PhotoImage(Image.open(c.fillys_carhop_cafe).resize((500, 400))),
+    "station_52" : ImageTk.PhotoImage(Image.open(c.station_52).resize((500, 400))),
+    "east_millard_swimming_pool" : ImageTk.PhotoImage(Image.open(c.east_millard_swimming_pool).resize((500, 400))),
+    "fillmore_city_library" : ImageTk.PhotoImage(Image.open(c.fillmore_city_library).resize((500, 400))),
+    "intermountain_health" : ImageTk.PhotoImage(Image.open(c.intermountain_health).resize((500, 400))),
+    "revere_health_family_medicine" : ImageTk.PhotoImage(Image.open(c.revere_health_family_medicine).resize((500, 400))),
+    "pampered_paws_grooming" : ImageTk.PhotoImage(Image.open(c.pampered_paws_grooming).resize((500, 400))),
+    "fillmore_paws_training_center" : ImageTk.PhotoImage(Image.open(c.fillmore_paws_training_center).resize((500, 400))),
+    "millard_high_school" : ImageTk.PhotoImage(Image.open(c.millard_high_school).resize((500, 400))),
+    "fillmore_elementary_school" : ImageTk.PhotoImage(Image.open(c.fillmore_elementary_school).resize((500, 400))),
+    "fillmore_middle_school" : ImageTk.PhotoImage(Image.open(c.fillmore_middle_school).resize((500, 400)))
 }
 
 #other images
@@ -261,11 +282,41 @@ search_var = tk.StringVar()
 search_bar = tk.Entry(left, textvariable=search_var, bg=c.entry_background, fg=c.entry_text, font=("Arial", 32))
 search_bar.grid(row=1, column=2, columnspan=3, padx=5, pady=5, sticky="ew")
 
+# Scrollable list container
+list_container = tk.Frame(left, bg=c.background)
+list_container.grid(row=2, column=0, columnspan=5, sticky="nesw", padx=15, pady=15)
 
-business_display = tk.Frame(left, bg=c.background)
-business_display.grid(row=2, column=0, columnspan=5, sticky="nesw", padx=15, pady=15)
+# Layout weights for the top row (buttons + search)
+left.grid_columnconfigure(0, weight=0)
+left.grid_columnconfigure(1, weight=0)
+left.grid_columnconfigure(2, weight=1)
+left.grid_columnconfigure(3, weight=1)
+left.grid_columnconfigure(4, weight=1)
+
+left.grid_rowconfigure(2, weight=1)
+
+canvas = tk.Canvas(list_container, bg=c.background, highlightthickness=0)
+scrollBar = tk.Scrollbar(list_container, orient="vertical", command=canvas.yview)
+canvas.configure(yscrollcommand=scrollBar.set)
+
+business_display = tk.Frame(canvas, bg=c.background)
 business_display.grid_columnconfigure(0, weight=1)
 
+# Keep a reference to the window item so we can keep it in sync with the canvas width
+business_display_window = canvas.create_window((0, 0), window=business_display, anchor='nw')
+
+# Keep the embedded frame wide enough when the canvas resizes
+def _resize_canvas(event):
+    canvas.itemconfigure(business_display_window, width=event.width)
+
+canvas.bind("<Configure>", _resize_canvas)
+
+canvas.grid(row=0, column=0, sticky="nesw")
+scrollBar.grid(row=0, column=1, sticky="ns", pady=15)
+
+# Make canvas expand within its container
+list_container.grid_rowconfigure(0, weight=1)
+list_container.grid_columnconfigure(0, weight=1)
 
 #Functions ----------
 
@@ -331,6 +382,10 @@ def update_left_list():
         )
         fav_btn.image = favorite_image
         fav_btn.grid(row=0, column=1, sticky="e", padx=5, pady=5)
+
+    # Update the scroll region so scrolling matches content size
+    canvas.update_idletasks()
+    canvas.configure(scrollregion=canvas.bbox("all"))
 
 def update_right_list():
     #Clear all items in the frame

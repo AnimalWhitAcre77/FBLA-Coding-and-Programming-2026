@@ -50,9 +50,9 @@
         "type": "Agriculture"
     }, 
     {
-        "name": "The Flower Mill & Me",
+        "name": "The Flower Mill and Me",
         "rating": 4.9,
-        "image": "the_flower_mill_&_me",
+        "image": "the_flower_mill_and_me",
         "description": "Flower shop and drink shop.",
         "address": "150 N Main St. Fillmore, UT",
 	    "hours": "8 A.M. - 5 P.M.",
@@ -82,7 +82,7 @@
     {
         "name": "IFA",
         "rating": 4.8,
-        "image": "fillmore_feed_and_farm_supply",
+        "image": "ifa",
         "description": "Friendly feed and farm store.",
         "address": "560 N Main St. Fillmore, UT",
 	    "hours": "8 A.M. - 6 P.M.",
