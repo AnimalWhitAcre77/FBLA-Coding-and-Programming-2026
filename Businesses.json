@@ -1,22 +1,212 @@
 [
     {
-        "name": "Wendys",
-        "rating": 5.0,
-        "image": "generic_business_image",
-        "description": "This description is really cool",
-        "address": "100 W, 100 S",
-	    "hours": "10 A.M. - 3 P.M.",
-	    "favorite": "True",
-        "type": "Food"
-    },
+        "name": "Fillmore Market",
+        "rating": 4.2,
+        "image": "fillmore_market",
+        "description": "A great stop for baked goods, deli, and everyday items.",
+        "address": "375 S Main St. Fillmore, UT",
+	    "hours": "7 A.M. - 10 P.M.",
+	    "favorite": "False",
+        "type": "Store"
+    }, 
     {
-        "name": "McDonalds",
-        "rating": 1.0,
-        "image": "generic_business_image",
-        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
-        "address": "100 W, 50 N",
-	    "hours": "10 A.M. - 11 A.M.",
+        "name": "IceBerg",
+        "rating": 3.5,
+        "image": "iceberg",
+        "description": "Fast food and famous thick shakes.",
+        "address": "930 UT-99, Fillmore, UT",
+	    "hours": "11 A.M. - 9 P.M.",
 	    "favorite": "False",
         "type": "Food"
+    }, 
+    {
+        "name": "Kanosh Labs",
+        "rating": 5,
+        "image": "kanosh_labs",
+        "description": "Dog breeder in Millard County Utah.",
+        "address": "5230 W Sand Hills Road Kanosh, UT",
+	    "hours": "9 A.M. - 9 P.M.",
+	    "favorite": "False",
+        "type": "Pets"
+    }, 
+    {
+        "name": "Ace Hardware",
+        "rating": 4.7,
+        "image": "ace_hardware",
+        "description": "Hardware store, home household tools, and more.",
+        "address": "95 N Main St. Fillmore, UT",
+	    "hours": "8 A.M. - 7 P.M.",
+	    "favorite": "False",
+        "type": "Store"
+    }, 
+    {
+        "name": "Mountain View Mushroom",
+        "rating": 4.6,
+        "image": "mountain_view_mushroom",
+        "description": "Mushroom farm/supplier",
+        "address": "550 S 1100 W Fillmore, UT",
+	    "hours": "8 A.M. - 5 P.M.",
+	    "favorite": "False",
+        "type": "Agricultural"
+    }, 
+    {
+        "name": "The Flower Mill & Me",
+        "rating": 4.9,
+        "image": "the_flower_mill_&_me",
+        "description": "Flower shop and drink shop.",
+        "address": "150 N Main St. Fillmore, UT",
+	    "hours": "8 A.M. - 5 P.M.",
+	    "favorite": "False",
+        "type": "Store"
+    }, 
+    {
+        "name": "Great Lakes Cheese",
+        "rating": 3.2,
+        "image": "great_lakes_cheese",
+        "description": "Cheese Manufacturer.",
+        "address": "780 W 1400 S Fillmore, UT",
+	    "hours": "6 A.M. - 5 P.M.",
+	    "favorite": "False",
+        "type": "Agricultural"
+    }, 
+    {
+        "name": "Ashton Farms Custom Meat",
+        "rating": 4.9,
+        "image": "ashton_farms_custom_meat",
+        "description": "Butcher shop.",
+        "address": "1301 E 1650 N Fillmore, UT",
+	    "hours": "8 A.M. - 6 P.M.",
+	    "favorite": "False",
+        "type": "Agricultural"
+    }, 
+    {
+        "name": "IFA",
+        "rating": 4.8,
+        "image": "fillmore_feed_and_farm_supply",
+        "description": "Friendly feed and farm store.",
+        "address": "560 N Main St. Fillmore, UT",
+	    "hours": "8 A.M. - 6 P.M.",
+	    "favorite": "False",
+        "type": "Agricultural"
+    }, 
+    {
+        "name": "Service Drug",
+        "rating": 4.9,
+        "image": "service_drug",
+        "description": "Fillmore pharmacy and prescription.",
+        "address": "40 N Main St. Fillmore, UT",
+	    "hours": "9 A.M. - 7 P.M.",
+	    "favorite": "False",
+        "type": "Medical"
+    }, 
+    {
+        "name": "Filly's Carhop Cafe",
+        "rating": 4.7,
+        "image": "fillys_carhop_cafe",
+        "description": "Long running cafe featuring burgers, malts, and more.",
+        "address": "270 N Main St. Fillmore, UT",
+	    "hours": "11 A.M. - 8 P.M.",
+	    "favorite": "False",
+        "type": "Food"
+    }, 
+    {
+        "name": "Station 52",
+        "rating": 5.0,
+        "image": "station_52",
+        "description": "Golf Driver Range, 18 hold course.",
+        "address": "260 N Main St. Fillmore, UT",
+	    "hours": "6 A.M. - 11 P.M.",
+	    "favorite": "False",
+        "type": "Recreation"
+    }, 
+    {
+        "name": "East Millard Swimming Pool",
+        "rating": 4.5,
+        "image": "east_millard_swimming_pool",
+        "description": "Public swimming pool in Fillmore, UT.",
+        "address": "55 S 100 W. Fillmore, UT",
+	    "hours": "4 P.M. - 7 P.M.",
+	    "favorite": "False",
+        "type": "Recreation"
+    }, 
+    {
+        "name": "Fillmore City Library",
+        "rating": 5.0,
+        "image": "fillmore_city_library",
+        "description": "Public library in Fillmore, UT. Hosts town events.",
+        "address": "25 S 100 W. Fillmore, UT",
+	    "hours": "10 A.M. - 6 P.M.",
+	    "favorite": "False",
+        "type": "Recreation"
+    }, 
+    {
+        "name": "Intermountain Health",
+        "rating": 4.6,
+        "image": "intermountain_health",
+        "description": "Community Hospital in East Millard, UT.",
+        "address": "674 UT-99 Fillmore, UT",
+	    "hours": "11 A.M. - 12 P.M.",
+	    "favorite": "False",
+        "type": "Medical"
+    }, 
+    {
+        "name": "Revere Health Family Medicine",
+        "rating": 4.9,
+        "image": "revere_health_family_medicine",
+        "description": "Medical clinic in Fillmore UT.",
+        "address": "770 UT-99 Fillmore, UT",
+	    "hours": "8 A.M. - 5 P.M.",
+	    "favorite": "False",
+        "type": "Medical"
+    }, 
+    {
+        "name": "Pampered Paws Grooming",
+        "rating": 5.0,
+        "image": "pampered_paws_grooming",
+        "description": "Pet Groomer in Fillmore UT.",
+        "address": "295 W 500 N Fillmore, UT",
+	    "hours": "2 P.M. - 7 P.M.",
+	    "favorite": "False",
+        "type": "Pets"
+    }, 
+    {
+        "name": "Fillmore Paws Training Center",
+        "rating": 5.0,
+        "image": "fillmore_paws_training_center",
+        "description": "Dog Trainer in Fillmore UT.",
+        "address": "495 S 800 E Fillmore, UT",
+	    "hours": "10 A.M. - 4 P.M.",
+	    "favorite": "False",
+        "type": "Pets"
+    }, 
+    {
+        "name": "Millard High School",
+        "rating": 4.1,
+        "image": "millard_high_school",
+        "description": "Local high school in Fillmore UT. Snow College concurrent enrollment.",
+        "address": "200 Eagle Ave. Fillmore, UT",
+	    "hours": "8 A.M. - 4 P.M.",
+	    "favorite": "False",
+        "type": "Education"
+    }, 
+    {
+        "name": "Fillmore Elementary School",
+        "rating": 5.0,
+        "image": "fillmore_elementary_school",
+        "description": "Local elementary school in Fillmore UT. Go Chimpmunks!",
+        "address": "555 W 400 S Fillmore, UT",
+	    "hours": "8 A.M. - 4 P.M.",
+	    "favorite": "False",
+        "type": "Education"
+    }, 
+    {
+        "name": "Fillmore Middle School",
+        "rating": 3.0,
+        "image": "fillmore_middle_school",
+        "description": "Public middle school in Fillmore UT.",
+        "address": "435 S 500 W Fillmore, UT",
+	    "hours": "8 A.M. - 4 P.M.",
+	    "favorite": "False",
+        "type": "Education"
     }
 ]
