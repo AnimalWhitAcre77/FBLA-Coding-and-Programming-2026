@@ -68,7 +68,7 @@ def confirmation_window(event=None):
 
     pop = tk.Toplevel()
 
-    c.SubTitle(pop, text="Are you sure you want to quit?????>?!?!?!").grid(row=0, column=0, columnspan=2, sticky="nesw", padx=10, pady=10)
+    c.SubTitle(pop, text="Are you sure you want to quit?").grid(row=0, column=0, columnspan=2, sticky="nesw", padx=10, pady=10)
     tk.Button(pop, text="Cancel", command=pop.destroy).grid(row=1, column=0, sticky="nesw", padx=10, pady=10)
     tk.Button(pop, text="Quit", command=quit_program).grid(row=1, column=1, sticky="nesw", padx=10, pady=10)
 
@@ -139,6 +139,7 @@ def filter_window():
     def clear_pop():
         global filters
         filters = ["", "", "", "", "", "", "", ""]
+        search_var.set("")
 
         filter_businesses()
 
@@ -228,6 +229,7 @@ def captcha_window():
     entry = tk.Entry(pop, textvariable=captcha_input)
     entry.grid(row=2, column=1, padx=10, pady=10)
     entry.bind("<Return>", check_solution)
+    entry.focus_set()
 
     tk.Button(pop, text="Cancel", command=pop.destroy).grid(row=3, column=0, padx=10, pady=10, sticky="w")
     tk.Button(pop, text="Submit", command=check_solution).grid(row=3, column=1, padx=10, pady=10, sticky="e")
@@ -254,7 +256,7 @@ def rating_window(): #uses the selected_business_index var to leave the right ra
 #Configure UI ----------
 
 #Set up the main window
-root.title("HEEELLLLPPPP?")
+root.title("Small Business Finder")
 root.attributes('-fullscreen', True)
 root.grid_rowconfigure(0, weight=1)  # Make row 0 expand vertically
 root.grid_columnconfigure(0, weight=1) # Make column 0&1 expand horizontally

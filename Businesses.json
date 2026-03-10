@@ -10,7 +10,7 @@
         "type": "Store"
     }, 
     {
-        "name": "IceBerg",
+        "name": "Iceberg",
         "rating": 3.5,
         "image": "iceberg",
         "description": "Fast food and famous thick shakes.",
@@ -43,7 +43,7 @@
         "name": "Mountain View Mushroom",
         "rating": 4.6,
         "image": "mountain_view_mushroom",
-        "description": "Mushroom farm/supplier",
+        "description": "Mushroom farm in Fillmore, UT.",
         "address": "550 S 1100 W Fillmore, UT",
 	    "hours": "8 A.M. - 5 P.M.",
 	    "favorite": "False",
