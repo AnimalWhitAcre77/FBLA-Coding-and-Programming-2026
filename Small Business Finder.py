@@ -38,7 +38,7 @@ business_images= {
     "great_lakes_cheese" : ImageTk.PhotoImage(Image.open(c.great_lakes_cheese).resize((500, 400))),
     "ashton_farms_custom_meat" : ImageTk.PhotoImage(Image.open(c.ashton_farms_custom_meat).resize((500, 400))),
     "ifa" : ImageTk.PhotoImage(Image.open(c.ifa).resize((500, 400))),
-    "sevice_drug" : ImageTk.PhotoImage(Image.open(c.service_drug).resize((500, 400))),
+    "service_drug" : ImageTk.PhotoImage(Image.open(c.service_drug).resize((500, 400))),
     "fillys_carhop_cafe" : ImageTk.PhotoImage(Image.open(c.fillys_carhop_cafe).resize((500, 400))),
     "station_52" : ImageTk.PhotoImage(Image.open(c.station_52).resize((500, 400))),
     "east_millard_swimming_pool" : ImageTk.PhotoImage(Image.open(c.east_millard_swimming_pool).resize((500, 400))),
@@ -163,10 +163,11 @@ def filter_window():
     favorite_operator.set("True")
 
     type_enumeration = tk.StringVar(pop)
+    type_enumeration.set("Food")
 
     c.SubTitle(pop, text="Filter").grid(row=0, column=0, padx=10, pady=10)
 
-    listbox = tk.Listbox(pop, selectmode="multiple")
+    listbox = tk.Listbox(pop, selectmode="multiple", exportselection=False)
     listbox.bind("<<ListboxSelect>>", update_filter_ui)
     listbox.grid(row=1, column=0, padx=10, pady=10)
 
@@ -383,6 +384,9 @@ def update_left_list():
         fav_btn.image = favorite_image
         fav_btn.grid(row=0, column=1, sticky="e", padx=5, pady=5)
 
+    if len(visible_business_list) == 0:
+        c.Paragraph(business_display, text="No businesses match current settings.").grid(row=0, column=0)
+
     # Update the scroll region so scrolling matches content size
     canvas.update_idletasks()
     canvas.configure(scrollregion=canvas.bbox("all"))
@@ -476,16 +480,19 @@ def filter_businesses():
     visible_business_list = business_list.copy() #Has to make it new list so business_list is unchanged
 
     if filters[0] != "": #first condition isn't empty (rating)
+        temp = []
         for business in visible_business_list:
             if filters[0] == ">":   #Greater Than
-                if business.rating <= float(filters[1]):
-                    visible_business_list.remove(business)
+                if business.rating > float(filters[1]):
+                    temp.append(business)
             elif filters[0] == "=": #Equal To
-                if business.rating != float(filters[1]):
-                    visible_business_list.remove(business)
+                if business.rating == float(filters[1]):
+                    temp.append(business)
             else:                   #Less Than
-                if business.rating >= float(filters[1]):
-                    visible_business_list.remove(business)
+                if business.rating < float(filters[1]):
+                    temp.append(business)
+
+        visible_business_list = temp
     
     if filters[2] != "": #second condition (time)
         filterTime = int(filters[2])
@@ -530,7 +537,7 @@ def filter_businesses():
     if filters[7] != "":
         temp = []
         for business in visible_business_list:
-            if (filters[7].lower() in business.name.lower()):
+            if (filters[7].lower() in f"{business.name.lower()}, ({business.type.lower()})"):
                 temp.append(business)
         visible_business_list = temp
     
