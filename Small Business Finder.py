@@ -92,7 +92,7 @@ def filter_window():
             c.SubTitle(FilterEditor, text="Type").grid(row=3, column=0, padx=10, pady=10)
             c.SubTitle(FilterEditor, text="=").grid(row=3, column=1, padx=10, pady=10)
             
-            tk.OptionMenu(FilterEditor, type_enumeration, "Food", "Grocery", "Auto").grid(row=3, column=2, padx=10, pady=10)
+            tk.OptionMenu(FilterEditor, type_enumeration, "Food", "Store", "Auto", "Pets", "Agriculture", "Medical", "Recreation", "Education").grid(row=3, column=2, padx=10, pady=10)
         else:
             # clear the type enumeration when the filter is deselected
             type_enumeration.set("")
@@ -145,8 +145,7 @@ def filter_window():
 
     c.SubTitle(pop, text="Filter").grid(row=0, column=0, padx=10, pady=10)
 
-    # Keep selection even when focus moves to other widgets (e.g. when highlighting entry text)
-    listbox = tk.Listbox(pop, selectmode="multiple", exportselection=False)
+    listbox = tk.Listbox(pop, selectmode="multiple")
     listbox.bind("<<ListboxSelect>>", update_filter_ui)
     listbox.grid(row=1, column=0, padx=10, pady=10)
 
@@ -262,41 +261,11 @@ search_var = tk.StringVar()
 search_bar = tk.Entry(left, textvariable=search_var, bg=c.entry_background, fg=c.entry_text, font=("Arial", 32))
 search_bar.grid(row=1, column=2, columnspan=3, padx=5, pady=5, sticky="ew")
 
-# Scrollable list container
-list_container = tk.Frame(left, bg=c.background)
-list_container.grid(row=2, column=0, columnspan=5, sticky="nesw", padx=15, pady=15)
 
-# Layout weights for the top row (buttons + search)
-left.grid_columnconfigure(0, weight=0)
-left.grid_columnconfigure(1, weight=0)
-left.grid_columnconfigure(2, weight=1)
-left.grid_columnconfigure(3, weight=1)
-left.grid_columnconfigure(4, weight=1)
-
-left.grid_rowconfigure(2, weight=1)
-
-canvas = tk.Canvas(list_container, bg=c.background, highlightthickness=0)
-scrollBar = tk.Scrollbar(list_container, orient="vertical", command=canvas.yview)
-canvas.configure(yscrollcommand=scrollBar.set)
-
-business_display = tk.Frame(canvas, bg=c.background)
+business_display = tk.Frame(left, bg=c.background)
+business_display.grid(row=2, column=0, columnspan=5, sticky="nesw", padx=15, pady=15)
 business_display.grid_columnconfigure(0, weight=1)
 
-# Keep a reference to the window item so we can keep it in sync with the canvas width
-business_display_window = canvas.create_window((0, 0), window=business_display, anchor='nw')
-
-# Keep the embedded frame wide enough when the canvas resizes
-def _resize_canvas(event):
-    canvas.itemconfigure(business_display_window, width=event.width)
-
-canvas.bind("<Configure>", _resize_canvas)
-
-canvas.grid(row=0, column=0, sticky="nesw")
-scrollBar.grid(row=0, column=1, sticky="ns", pady=15)
-
-# Make canvas expand within its container
-list_container.grid_rowconfigure(0, weight=1)
-list_container.grid_columnconfigure(0, weight=1)
 
 #Functions ----------
 
@@ -362,10 +331,6 @@ def update_left_list():
         )
         fav_btn.image = favorite_image
         fav_btn.grid(row=0, column=1, sticky="e", padx=5, pady=5)
-
-    # Update the scroll region so scrolling matches content size
-    canvas.update_idletasks()
-    canvas.configure(scrollregion=canvas.bbox("all"))
 
 def update_right_list():
     #Clear all items in the frame
@@ -456,18 +421,17 @@ def filter_businesses():
     visible_business_list = business_list.copy() #Has to make it new list so business_list is unchanged
 
     if filters[0] != "": #first condition isn't empty (rating)
-        try:
-            filter_rating = float(filters[1])
-        except ValueError:
-            filter_rating = 0.0
-
-        if filters[0] == ">":   #Greater Than
-            visible_business_list = [b for b in visible_business_list if b.rating > filter_rating]
-        elif filters[0] == "=": #Equal To
-            visible_business_list = [b for b in visible_business_list if b.rating == filter_rating]
-        else:                   #Less Than
-            visible_business_list = [b for b in visible_business_list if b.rating < filter_rating]
-
+        for business in visible_business_list:
+            if filters[0] == ">":   #Greater Than
+                if business.rating <= float(filters[1]):
+                    visible_business_list.remove(business)
+            elif filters[0] == "=": #Equal To
+                if business.rating != float(filters[1]):
+                    visible_business_list.remove(business)
+            else:                   #Less Than
+                if business.rating >= float(filters[1]):
+                    visible_business_list.remove(business)
+    
     if filters[2] != "": #second condition (time)
         filterTime = int(filters[2])
         
@@ -511,7 +475,7 @@ def filter_businesses():
     if filters[7] != "":
         temp = []
         for business in visible_business_list:
-            if (filters[7].lower() in f"{business.name.lower()} ({business.type.lower()})"):
+            if (filters[7].lower() in business.name.lower()):
                 temp.append(business)
         visible_business_list = temp
     
