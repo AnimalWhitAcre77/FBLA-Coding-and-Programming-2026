@@ -122,7 +122,8 @@ def filter_window():
     def finish_pop():
         global filters
         if 0 in selected_filters:
-            filters[0] = rating_operator.get()
+            if (rating_operator.get() == "") : filters[0] = "0.0"
+            else : filters[0] = rating_operator.get()
             filters[1] = rating_number.get()
         if 1 in selected_filters:
             filters[2] = hour_number.get()
@@ -334,7 +335,7 @@ def on_search(*args):
     filters[7] = text
     filter_businesses()
 
-search_var.trace("w", on_search)
+search_var.trace_add("write", on_search)
 
 def toggle_favorite(idx):
     # Toggle boolean favorite flag
