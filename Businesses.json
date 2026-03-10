@@ -18,6 +18,7 @@
 	    "hours": "11 A.M. - 9 P.M.",
 	    "favorite": "False",
         "type": "Food"
+<<<<<<< HEAD
     }, 
     {
         "name": "Kanosh Labs",
@@ -208,5 +209,187 @@
 	    "hours": "8 A.M. - 4 P.M.",
 	    "favorite": "False",
         "type": "Education"
+=======
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+    },
+    {
+        "name": "McDonalds",
+        "rating": 1.0,
+        "image": "generic_business_image",
+        "description": "McDonalds is a garage sell when a garage sell is compared to ace hardware.",
+        "address": "100 W, 50 N",
+	    "hours": "10 A.M. - 11 A.M.",
+	    "favorite": "False",
+        "type": "Food"
+>>>>>>> f3af73fac58a562c515deb1957f93215b403e38a
     }
 ]
