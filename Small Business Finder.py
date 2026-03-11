@@ -211,6 +211,9 @@ def captcha_window():
         if captcha_input.get() == "w3dfs":
             pop.destroy()
             rating_window()
+        elif captcha_input.get() == "secretcode":
+            pop.destroy()
+            thank_you_window()
         else:
             captcha_input.set("")
             text.config(text="Please Try Again: ")
@@ -235,6 +238,11 @@ def captcha_window():
     tk.Button(pop, text="Cancel", command=pop.destroy).grid(row=3, column=0, padx=10, pady=10, sticky="w")
     tk.Button(pop, text="Submit", command=check_solution).grid(row=3, column=1, padx=10, pady=10, sticky="e")
 
+def thank_you_window():
+    pop = tk.Toplevel()
+
+    c.SubTitle(pop, text="Thank You for Your Time!").grid(row=0, column=0, padx=10, pady=10)
+
 def rating_window(): #uses the selected_business_index var to leave the right rating
     def finish_pop():
         visible_business_list[selected_business_index].rating = round((visible_business_list[selected_business_index].rating + rating.get()) / 2, 1)
@@ -257,7 +265,7 @@ def rating_window(): #uses the selected_business_index var to leave the right ra
 #Configure UI ----------
 
 #Set up the main window
-root.title("Small Business Finder")
+root.title("Rate It!")
 root.attributes('-fullscreen', True)
 root.grid_rowconfigure(0, weight=1)  # Make row 0 expand vertically
 root.grid_columnconfigure(0, weight=1) # Make column 0&1 expand horizontally
